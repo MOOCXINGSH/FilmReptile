@@ -18,20 +18,63 @@ print("start...")
 # from airtest.report.report import simple_report
 # simple_report(__file__, logpath=True)
 from poco.drivers.android.uiautomation import AndroidUiautomationPoco
+
+poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
+poco("com.sankuai.moviepro:id/tv_information").click()
+poco(text="国产").click()
 while True:
-    poco = AndroidUiautomationPoco(use_airtest_input=True, screenshot_each_action=False)
-    poco("com.sankuai.moviepro:id/tv_information").click()
-    poco(text="国产").click()
-    poco(text="战狼2").click()
-    snapshot(msg="当前界面.")
-    swipe(Template(r"tpl1558373249036.png", record_pos=(-0.007, 0.788), resolution=(1080, 2160)), vector=[-0.4682, -0.8504])
-    snapshot(msg="当前界面.")
-    swipe(Template(r"tpl1558373496381.png", record_pos=(-0.013, 0.691), resolution=(1080, 2160)), vector=[-0.4731, -0.7548])
-    touch(Template(r"tpl1558373882687.png", record_pos=(0.36, 0.59), resolution=(1080, 2160)))
-    touch(Template(r"tpl1558373949241.png", record_pos=(-0.447, -0.274), resolution=(1080, 2160)))
-    snapshot(msg="当前界面.")
-    touch(Template(r"tpl1558378280045.png", record_pos=(-0.457, -0.889), resolution=(1080, 2160)))
-    touch(Template(r"tpl1558378280045.png", record_pos=(-0.457, -0.889), resolution=(1080, 2160)))
-    touch(Template(r"tpl1558378280045.png", record_pos=(-0.457, -0.889), resolution=(1080, 2160)))
+
+    swipe(Template(r"tpl1558456729319.png", record_pos=(0.01, 0.009), resolution=(1080, 2160)), vector=[-0.4726, -0.1763])
+    #poco("com.sankuai.moviepro:id/mil_container").focus([0.5,0.5]).click()
+    poco("com.sankuai.moviepro:id/root_recycle").focus([0.5,0.5]).click()
+    mode = True
+    while mode==True:
+        snapshot(msg="当前界面.")
+        poco("com.sankuai.moviepro:id/layout_webview").swipe([0.5,-0.5])
+        if exists(Template(r"tpl1558458406606.png", record_pos=(0.371, -0.76), resolution=(1080, 2160))):
+            touch(Template(r"tpl1558458423851.png", record_pos=(0.369, -0.759), resolution=(1080, 2160)))
+            while mode==True:
+                snapshot(msg="当前界面.")
+                poco("com.sankuai.moviepro:id/layout_webview").swipe([0.5,-0.5])
+                if exists(Template(r"tpl1558458574036.png", record_pos=(-0.441, -0.164), resolution=(1080, 2160))):
+                    touch(Template(r"tpl1558458586688.png", record_pos=(-0.437, -0.164), resolution=(1080, 2160)))
+                    while mode==True:
+                        snapshot(msg="当前界面.")
+                        poco("com.sankuai.moviepro:id/layout_webview").swipe([0.5,-0.5])
+                        if exists(Template(r"tpl1558458719743.png", record_pos=(-0.441, -0.193), resolution=(1080, 2160))):
+                            touch(Template(r"tpl1558458732515.png", record_pos=(-0.438, -0.185), resolution=(1080, 2160)))
+                            while mode==True:
+                                snapshot(msg="当前界面.")
+                                poco("com.sankuai.moviepro:id/layout_webview").swipe([0.5,-0.5])
+                                touch(Template(r"tpl1558460701633.png", record_pos=(-0.452, -0.886), resolution=(1080, 2160)))
+                                sleep(1)
+                                touch(Template(r"tpl1558460717253.png", record_pos=(-0.454, -0.885), resolution=(1080, 2160)))
+                                mode = not mode
+
+
+
+
+              
+
+
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
