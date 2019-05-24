@@ -6,6 +6,7 @@ import numpy as np
 import os
 import glob
 import re
+import codecs
 
 subtable=[
     ["战混","战狼2"],
@@ -20,14 +21,19 @@ subtable=[
     ["-","."],
     ["ã良","狼"],
     ["昊","吴"],
-    ["不皇","不是"]
+    ["不皇","不是"],
+    ["\)",""],
+    ["药禅","药神"],
+    ["l\\`",""]
 ]
 
 def resuball(filmname):
     global subtable
     for subname in subtable:
+        #print("subname",subname)
         filmname=re.sub(subname[0],subname[1],filmname)
     return filmname
+
 
 def cv_imread(file_path):
     #print("cv_imreawd",file_path)
@@ -47,7 +53,7 @@ def ocrFile(filename):
     x2,y2=1100,410
     imgfocus=img[y1:y2,x1:x2]
     cv2.imshow("filmname",imgfocus)
-    cv2.waitKey(50)
+    cv2.waitKey(1)
     image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
     #image.show()
     filmnstr = pytesseract.image_to_string(image,lang='chi_sim')
@@ -75,7 +81,7 @@ def ocrFile(filename):
     x2,y2=800,565
     imgfocus=img[y1:y2,x1:x2]
     cv2.imshow("filmtype",imgfocus)
-    cv2.waitKey(50)
+    cv2.waitKey(1)
     image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
     #image.show()
     filmtype = pytesseract.image_to_string(image,lang='chi_sim')
@@ -103,9 +109,8 @@ def ocrFile(filename):
     x2,y2=750,1350
     imgfocus=img[y1:y2,x1:x2]
     cv2.imshow("boxoffice",imgfocus)
-    cv2.waitKey(50)
+    cv2.waitKey(1)
     image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
-    #image.show()
     boxoffice = pytesseract.image_to_string(image,lang='chi_sim')
     boxoffice = re.sub(" ","",boxoffice)
     boxoffs=boxoffice.split("\n")
@@ -120,7 +125,7 @@ def ocrFile(filename):
     x2,y2=200,1450
     imgfocus=img[y1:y2,x1:x2]
     cv2.imshow("marketingdata",imgfocus)
-    cv2.waitKey(50)
+    cv2.waitKey(1)
     image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
     #image.show()
     marketingdata = pytesseract.image_to_string(image,lang='chi_sim')
@@ -130,7 +135,7 @@ def ocrFile(filename):
         x2,y2=200,1700
         imgfocus=img[y1:y2,x1:x2]
         cv2.imshow("marketingdata",imgfocus)
-        cv2.waitKey(50)
+        cv2.waitKey(1)
         image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
         #image.show()
         marketingdata = pytesseract.image_to_string(image,lang='chi_sim')
@@ -140,7 +145,7 @@ def ocrFile(filename):
         x2,y2=x2+800,y2+140
         imgfocus=img[y1:y2,x1:x2]
         cv2.imshow("marketingdata",imgfocus)
-        cv2.waitKey(50)
+        cv2.waitKey(1)
         image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
         #image.show()
         marketingdata = pytesseract.image_to_string(image,lang='chi_sim')
@@ -155,8 +160,7 @@ def ocrFile(filename):
     mktdtconts=(marketingdata.split("\n"))[1].split(" ")
     for i in range(4):
         boxoffdict[mktdtitles[i]]=mktdtconts[i]
-    print(boxoffdict)
-
+    return str(boxoffdict)
 
 
 #导演演员编剧完整图
@@ -184,7 +188,7 @@ def ocrFilmDirActInfo(filename):
     #从员-开始
     imgfocus=imgfocus[0:y2-y1,pt[0]+w-90:1100]
     cv2.imshow("imfocus2",imgfocus)
-    cv2.waitKey(10)
+    cv2.waitKey(1)
     h,w,c=imgfocus.shape
     wl=w
     num=int(w/wl)
@@ -211,7 +215,7 @@ def ocrFilmDirActInfo(filename):
     cv2.imshow("filmtype",imgfocus)
     #cv2.rectangle(img,(x1,y1),(x2,y2),(0,0,255),1)
     #cv2.imshow("OpenCV",img)
-    cv2.waitKey(50)
+    cv2.waitKey(1)
     image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
     #image.show()
     acttype = pytesseract.image_to_string(image,lang='chi_sim')
@@ -225,51 +229,31 @@ def ocrFilmDirActInfo(filename):
     num=6
     namestr=""
     for i in range(num):
-        x1,y1=250,y0+H*i
+        x1,y1=210,y0+H*i
         x2,y2=900,y0+H*i+LH
         imgfocus=img[y1:y2,x1:x2]
+        b,g,r=img[int((y1+y2)/2),x2]
+        #print("b",b)
+        if b < 250:
+            continue
+        #print("i",i)
         cv2.imshow("name",imgfocus)
         cv2.waitKey(1)
-        image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB)
-        #image.show()
+        image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
         name = pytesseract.image_to_string(image,lang='chi_sim')
         name = name.split("\n")
         name = re.sub(" ","",name[0])
         name = resuball(name)
+        name = re.sub("(\d+)","",name)
         if name != "":
             namestr += name+"/"
     actordict[acttype]=namestr[0:-1]
-    print(actordict)
-    
-#导演主演截图
-def ocrFilmDirInfo(filename):
-    #print("open file dir main act ocrfile",filename)
-    img = cv_imread(filename)
-    if img is None:
-        print("file is not img,pass:",filename)
-        return
-    y0=393
-    H=292
-    print("h",H)
-    LH=45
-    num=7
-    if "150443" not in filename:
-        y0=y0+19
-        H=H+1
-    for i in range(num):
-        x1,y1=200,y0+H*i
-        x2,y2=800,y0+H*i+LH
-        imgfocus=img[y1:y2,x1:x2]
-        cv2.imshow("imfocus "+str(i),imgfocus)
-        cv2.waitKey(1)
-        image = Image.fromarray(cv2.cvtColor(imgfocus,cv2.COLOR_BGR2RGB))
-        #image.show()
-        mainactor = pytesseract.image_to_string(image,lang='chi_sim')
-        print("Main acter",mainactor)
+    str(actordict)
+    return str(actordict)
     
 
 def walkandocr():
-    path = "./"+os.sep
+    path = "E:/students/电影信息统计20190517/4-人工猫眼专业版拷贝"+os.sep
     for root,dirs,files in os.walk(path):
         for file in files:
             if root ==path:
@@ -282,17 +266,26 @@ def walkandocr():
             paths=glob.glob(jpgfilename)
             print("paths",paths)
             paths.sort()
+            filmdictstr=""
             for path in paths:
                 print("\n Ocr:",path)
-                if "导演演员编剧完整图" in path:
-                    ocrFilmDirActInfo(path)
-                    pass
-                elif "导演主演截图" in path:
-                    #ocrFilmDirInfo(path)
-                    pass
-                elif "猫眼" in path:
-                    #ocrFile(path)
-                    pass
+                fp=codecs.open(path+".txt",'w',encoding='utf-8')
+                if "导演演员编剧完整图" in dirName:
+                    print("aaa1")
+                    filmdictstr=ocrFilmDirActInfo(path)
+                elif "导演主演截图" in dirName:
+                    print("aaa2")    
+                elif "猫眼" in dirName:
+                    print("aaa3")
+                    filmdictstr=ocrFile(path)
+                else:
+                    print("aaa4")
+
+                print("filmdict:",filmdictstr)
+                if filmdictstr !="":
+                    fp.write(filmdictstr)
+                    fp.close()
+                
 
 #ocrFilmDirActInfo(".\\5-maoyanOCR\\导演演员编剧完整图\\Screenshot_20190522_120123_com.sankuai.moviepro.jpg")
 walkandocr()
