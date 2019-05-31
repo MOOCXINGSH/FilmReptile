@@ -41,9 +41,9 @@ def open():
 
     driver.get(url)
     driver.find_element_by_xpath(xpath_name).clear()
-    driver.find_element_by_xpath(xpath_name).send_keys("17317348744")
+    driver.find_element_by_xpath(xpath_name).send_keys("")
     driver.find_element_by_xpath(xpath_pwd).clear()
-    driver.find_element_by_xpath(xpath_pwd).send_keys("123456aa")
+    driver.find_element_by_xpath(xpath_pwd).send_keys("")
 
 
     #定位“点击登录”框的位置的xpath，通过click()执行登录
