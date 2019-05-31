@@ -1,0 +1,1 @@
+import csvdef readData(path):    movData = []    csvData = csv.reader(open(path))    for data in csvData:        movData.append(data[0])    return movDatadef writeData(path,data_row):    with open(path,'a+',encoding="utf-8") as f:        csv_write = csv.writer(f)        csv_write.writerow(data_row)for i in range(0,5):    print(i)
